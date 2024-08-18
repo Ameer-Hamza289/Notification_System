@@ -37,8 +37,9 @@ const Login: React.FC<LoginProps> = ({ setToken }) => {
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-900">
       <div className="bg-gray-800 p-8 rounded-lg shadow-white max-w-md w-full transition-all hover:scale-105">
-        <h2 className="text-3xl font-bold text-center text-white mb-6">Login</h2>
-        <form onSubmit={handleSubmit} className="space-y-4">
+        <h2 className="text-3xl font-bold text-center text-white mb-4">Login</h2>
+        <hr className='w-full mb-8'/>
+        <form onSubmit={handleSubmit} className="space-y-6">
           <input
             type="email"
             name="email"
@@ -62,8 +63,8 @@ const Login: React.FC<LoginProps> = ({ setToken }) => {
             Login
           </button>
         </form>
-        <p className="text-center mt-4 text-gray-400">
-          A new user?{' '}
+        <p className="text-center mt-10 text-gray-400">
+          A new user ?{' '}
           <Link to="/register" className="text-blue-400 hover:underline transition-colors duration-300">
             Create/Register now
           </Link>
