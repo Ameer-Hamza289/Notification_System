@@ -17,3 +17,20 @@ This project implements a real-time notification system for TikTok Shop that inf
 - **Scalable Architecture:** Efficient handling of real-time data using Redis.
 - **Responsive UI:** Seamless integration of notifications into the frontend built with TypeScript.
 - **Secure & Efficient Deployment:** Deployed on Render for easy scalability and fault tolerance.
+
+## Installation & Setup
+### Prerequisites
+Make sure you have the following installed:
+- Golang
+- Node.js
+
+## Run the server locally:
+### Frontend
+- cd notification_system
+- npm i
+- npm run dev
+
+### Backend
+- cd tiktok-notifications
+- go run main.go
+
