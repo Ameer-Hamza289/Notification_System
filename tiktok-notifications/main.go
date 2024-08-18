@@ -35,14 +35,15 @@ func main() {
 
 	// Access environment variables
 	dbUser := os.Getenv("DB_USER")
-	// dbPassword := os.Getenv("DB_PASSWORD")
+	dbPassword := os.Getenv("DB_PASSWORD")
 	dbName := os.Getenv("DB_NAME")
 	// jwtSecret := os.Getenv("JWT_SECRET")
 	redisAddress := os.Getenv("REDIS_ADDRESS")
 	redisPassword := os.Getenv("REDIS_PASSWORD")
 
 	log.Printf("Connecting to database %s with user %s", dbName, dbUser)
-	dsn := "app_user:root@tcp(127.0.0.1:3306)/tiktokshop"
+	dsn := fmt.Sprintf("%s:%s@tcp(127.0.0.1:3306)/%s", dbUser, dbPassword, dbName)
+
 
 	// Connect to the database
 	db, err := sql.Open("mysql", dsn)
