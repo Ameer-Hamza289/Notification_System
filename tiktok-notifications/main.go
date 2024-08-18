@@ -4,10 +4,12 @@ import (
 	"context"
 	"log"
 	"net/http"
+	"os"
 
 	"github.com/gin-gonic/gin"
 	"github.com/go-redis/redis/v8"
 	"github.com/gorilla/websocket"
+	"github.com/joho/godotenv"
 )
 
 var ctx = context.Background()
@@ -21,15 +23,32 @@ var upgrader = websocket.Upgrader{
 }
 
 func main() {
+
+	// Load .env file
+	err := godotenv.Load()
+	if err != nil {
+		log.Fatalf("Error loading .env file")
+	}
+
+	// Access environment variables
+	dbUser := os.Getenv("DB_USER")
+	// dbPassword := os.Getenv("DB_PASSWORD")
+	dbName := os.Getenv("DB_NAME")
+	// jwtSecret := os.Getenv("JWT_SECRET")
+	redisAddress := os.Getenv("REDIS_ADDRESS")
+	redisPassword := os.Getenv("REDIS_PASSWORD")
+
+	log.Printf("Connecting to database %s with user %s", dbName, dbUser)
+
 	// Initialize Redis
 	rdb := redis.NewClient(&redis.Options{
-		Addr:     "redis-10911.c278.us-east-1-4.ec2.redns.redis-cloud.com:10911", // Use the Redis endpoint from redis.io
-		Password: "Tk0FkOIWhnOKBYOSCrKjx1sKADleL33U",
+		Addr:     redisAddress, // Use the Redis endpoint from redis.io
+		Password: redisPassword,
 		DB:       0, // Use default DB
 	})
 
 	// Test the Redis connection
-	_, err := rdb.Ping(ctx).Result()
+	_, err = rdb.Ping(ctx).Result()
 	if err != nil {
 		log.Fatalf("Failed to connect to Redis: %v", err)
 	} else {

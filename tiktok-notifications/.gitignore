@@ -1,0 +1,17 @@
+# Environment variables
+.env
+
+# Compiled Go files
+*.exe
+*.out
+*.test
+
+# Go vendor
+/vendor/
+/bin/
+/pkg/
+
+# Logs and temporary files
+*.log
+*.tmp
+*~
