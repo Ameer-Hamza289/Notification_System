@@ -37,7 +37,7 @@ export function PopoverComponent({
         </button>
       </PopoverTrigger>
       <PopoverContent className="w-80 shadow-none border-none  ">
-        <div className="absolute py-5 right-20 mt-2 w-80 bg-white rounded-lg shadow-lg z-10 p-4">
+        <div className="absolute py-5 fontPoppins right-20 mt-2 w-80 bg-white rounded-lg shadow-lg z-10 p-4">
           <h3 className="text-lg font-semibold">Notifications</h3>
           <ul className="mt-2 space-y-2">
             {notifications.length > 0 ? (

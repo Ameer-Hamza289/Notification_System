@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import cover from "../assets/image/cover.png";
+// import { InfiniteMovingCards } from "./ui/infinite-moving-cards";
 
 const Home: React.FC = () => {
   const [token, setToken] = useState<string | null>(
@@ -284,6 +285,10 @@ const Home: React.FC = () => {
               </a>
             </div>
           </div>
+
+          {/* <div>
+            <InfiniteMovingCards />
+          </div> */}
         </div>
       </section>
 
