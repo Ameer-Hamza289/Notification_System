@@ -185,7 +185,13 @@ func main() {
 
 	// Fetch recent posts
 	router.GET("/recent-posts", authenticateJWT, func(c *gin.Context) {
-		rows, err := db.Query("SELECT id, content_text, created_at FROM content ORDER BY created_at DESC LIMIT 20")
+		rows, err := db.Query(`
+        SELECT content.id, content.content_text, content.created_at, users.username, users.email
+        FROM content
+        JOIN users ON content.user_id = users.id
+        ORDER BY content.created_at DESC
+        LIMIT 20
+    `)
 		if err != nil {
 			log.Printf("Failed to query database: %v", err)
 			c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to fetch content"})
@@ -193,20 +199,26 @@ func main() {
 		}
 		defer rows.Close()
 
+		// Define a struct to hold the post and user data
 		var posts []struct {
 			ID        int       `json:"id"`
 			Content   string    `json:"content_text"`
 			CreatedAt time.Time `json:"created_at"`
+			Username  string    `json:"username"`
+			Email     string    `json:"email"`
 		}
 
 		for rows.Next() {
 			var post struct {
 				ID        int
 				Content   string
-				CreatedAt string // Change to string to parse manually
+				CreatedAt string
+				Username  string
+				Email     string
 			}
 
-			if err := rows.Scan(&post.ID, &post.Content, &post.CreatedAt); err != nil {
+			// Scan the results from the query into the struct
+			if err := rows.Scan(&post.ID, &post.Content, &post.CreatedAt, &post.Username, &post.Email); err != nil {
 				log.Printf("Failed to parse content data: %v", err)
 				c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to parse content"})
 				return
@@ -220,17 +232,23 @@ func main() {
 				return
 			}
 
+			// Append the post with user data to the response
 			posts = append(posts, struct {
 				ID        int       `json:"id"`
 				Content   string    `json:"content_text"`
 				CreatedAt time.Time `json:"created_at"`
+				Username  string    `json:"username"`
+				Email     string    `json:"email"`
 			}{
 				ID:        post.ID,
 				Content:   post.Content,
 				CreatedAt: createdAt,
+				Username:  post.Username,
+				Email:     post.Email,
 			})
 		}
 
+		// Return the posts along with user data
 		c.JSON(http.StatusOK, posts)
 	})
 
