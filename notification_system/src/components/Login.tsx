@@ -12,7 +12,7 @@ const Login: React.FC<LoginProps> = ({ setToken }) => {
     email: '',
     password: '',
   });
-const navigate=useNavigate();
+  const navigate = useNavigate();
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -26,48 +26,50 @@ const navigate=useNavigate();
       
       localStorage.setItem('token', token);
       setToken(token);
-      toast.success('Login Successful!')
-      navigate("/content")
+      toast.success('Login Successful!');
+      navigate("/content");
     } catch (error) {
-        console.error(error)
-        toast.error('Login Failed')
-    //   alert('Login failed');
+      console.error(error);
+      toast.error('Login Failed');
     }
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-50">
-    <div className="bg-white p-8 rounded-lg shadow-lg max-w-md w-full">
-      <h2 className="text-2xl font-bold text-center mb-6">Login</h2>
-      <form onSubmit={handleSubmit} className="space-y-4">
-        <input
-          type="email"
-          name="email"
-          placeholder="Email"
-          onChange={handleChange}
-          className="w-full p-3 border border-gray-300 rounded-md"
-          required
-        />
-        <input
-          type="password"
-          name="password"
-          placeholder="Password"
-          onChange={handleChange}
-          className="w-full p-3 border border-gray-300 rounded-md"
-          required
-        />
-        <button type="submit" className="w-full p-3 bg-blue-500 text-white rounded-md hover:bg-blue-600">
-          Login
-        </button>
-      </form>
-      <p className="text-center mt-4 text-gray-600">
+    <div className="min-h-screen flex items-center justify-center bg-gray-900">
+      <div className="bg-gray-800 p-8 rounded-lg shadow-white max-w-md w-full transition-all hover:scale-105">
+        <h2 className="text-3xl font-bold text-center text-white mb-6">Login</h2>
+        <form onSubmit={handleSubmit} className="space-y-4">
+          <input
+            type="email"
+            name="email"
+            placeholder="Email"
+            onChange={handleChange}
+            className="w-full p-3 bg-gray-700 text-white border border-gray-600 rounded-md placeholder-gray-400 transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            required
+          />
+          <input
+            type="password"
+            name="password"
+            placeholder="Password"
+            onChange={handleChange}
+            className="w-full p-3 bg-gray-700 text-white border border-gray-600 rounded-md placeholder-gray-400 transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            required
+          />
+          <button
+            type="submit"
+            className="w-full p-3 bg-blue-500 text-white rounded-md hover:bg-blue-600 transition-colors duration-300"
+          >
+            Login
+          </button>
+        </form>
+        <p className="text-center mt-4 text-gray-400">
           A new user?{' '}
-          <Link to="/register" className="text-blue-500 hover:underline">
+          <Link to="/register" className="text-blue-400 hover:underline transition-colors duration-300">
             Create/Register now
           </Link>
         </p>
+      </div>
     </div>
-  </div>
   );
 };
 
