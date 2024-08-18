@@ -2,6 +2,12 @@
 @tailwind components;
 @tailwind utilities;
 
+.fontSpaceGrotesk {
+  font-family: "Space Grotesk";
+}
+.fontPoppins {
+  font-family: "Poppins";
+}
 
 /* .App {
     text-align: center;
@@ -35,4 +41,3 @@
     padding: 10px;
     border-radius: 5px;
   } */
-  
