@@ -7,7 +7,7 @@ interface ContentProps {
 
 interface Post {
   id: number;
-  content: string;
+  content_text: string;
   created_at: string;
 }
 
@@ -200,7 +200,7 @@ const Content: React.FC<ContentProps> = ({ token }) => {
           {posts.length > 0 ? (
             posts.map((post) => (
               <div key={post.id} className="p-6 bg-white rounded-lg shadow-md">
-                <p className="text-gray-800">{post.content}</p>
+                <p className="text-gray-800">{post.content_text}</p>
                 <p className="text-gray-400 text-sm">{new Date(post.created_at).toLocaleString()}</p>
               </div>
             ))

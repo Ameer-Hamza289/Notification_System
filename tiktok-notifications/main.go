@@ -185,30 +185,50 @@ func main() {
 
 	// Fetch recent posts
 	router.GET("/recent-posts", authenticateJWT, func(c *gin.Context) {
-		rows, err := db.Query("SELECT id, content, created_at FROM posts ORDER BY created_at DESC LIMIT 20")
+		rows, err := db.Query("SELECT id, content_text, created_at FROM content ORDER BY created_at DESC LIMIT 20")
 		if err != nil {
-			c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to fetch posts"})
+			log.Printf("Failed to query database: %v", err)
+			c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to fetch content"})
 			return
 		}
 		defer rows.Close()
 
 		var posts []struct {
 			ID        int       `json:"id"`
-			Content   string    `json:"content"`
+			Content   string    `json:"content_text"`
 			CreatedAt time.Time `json:"created_at"`
 		}
 
 		for rows.Next() {
 			var post struct {
-				ID        int       `json:"id"`
-				Content   string    `json:"content"`
-				CreatedAt time.Time `json:"created_at"`
+				ID        int
+				Content   string
+				CreatedAt string // Change to string to parse manually
 			}
+
 			if err := rows.Scan(&post.ID, &post.Content, &post.CreatedAt); err != nil {
-				c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to parse posts"})
+				log.Printf("Failed to parse content data: %v", err)
+				c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to parse content"})
 				return
 			}
-			posts = append(posts, post)
+
+			// Convert the created_at string to time.Time manually
+			createdAt, err := time.Parse("2006-01-02 15:04:05", post.CreatedAt)
+			if err != nil {
+				log.Printf("Failed to parse time: %v", err)
+				c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to parse time"})
+				return
+			}
+
+			posts = append(posts, struct {
+				ID        int       `json:"id"`
+				Content   string    `json:"content_text"`
+				CreatedAt time.Time `json:"created_at"`
+			}{
+				ID:        post.ID,
+				Content:   post.Content,
+				CreatedAt: createdAt,
+			})
 		}
 
 		c.JSON(http.StatusOK, posts)
