@@ -107,7 +107,7 @@ const Content: React.FC<ContentProps> = ({ token }) => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-100 p-8 fontPoppins">
+    <div className="min-h-screen pt-20 max-w-7xl mx-auto  p-8 fontPoppins">
       {/* Header with Post Button and Notifications */}
       <div className="flex justify-between items-center mb-6">
         <div>
