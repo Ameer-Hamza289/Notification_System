@@ -7,7 +7,7 @@ interface ContentProps {
 
 interface Post {
   id: number;
-  content: string;
+  content_text: string;
   created_at: string;
 }
 
@@ -117,9 +117,15 @@ const Content: React.FC<ContentProps> = ({ token }) => {
           <h1 className="text-3xl font-bold">Recent Posts</h1>
           <div className="mt-2 text-sm">
             {isConnected ? (
-              <span className="text-green-500">Connected</span>
+              <div className='flex gap-1 items-center'>
+                <div className="bg-green-500 rounded-full h-[10px] w-[10px]"></div>
+                <span className="text-green-500">Online</span>
+              </div>
             ) : (
-              <span className="text-red-500">Disconnected</span>
+              <div className='flex gap-1 items-center'>
+                <div className="bg-red-500 rounded-full h-[10px] w-[10px]"></div>
+                <span className="text-red-500">Offline</span>
+              </div>
             )}
           </div>
         </div>
@@ -129,7 +135,7 @@ const Content: React.FC<ContentProps> = ({ token }) => {
             onClick={togglePostForm}
             className="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600"
           >
-            {showPostForm ? 'View Posts' : 'Post Content'}
+            {showPostForm ? "View Posts" : "Post Content"}
           </button>
 
           {/* Notification Icon */}
@@ -156,15 +162,12 @@ const Content: React.FC<ContentProps> = ({ token }) => {
 
             {/* Notifications Dropdown */}
             {showNotifications && (
-              <div className="absolute right-0 mt-2 w-64 bg-white rounded-lg shadow-lg z-10 p-4">
+              <div className="absolute right-0 mt-2 w-80 bg-white rounded-lg shadow-lg z-10 p-4">
                 <h3 className="text-lg font-semibold">Notifications</h3>
                 <ul className="mt-2 space-y-2">
                   {notifications.length > 0 ? (
                     notifications.map((notification, index) => (
-                      <li
-                        key={index}
-                        className="p-2 bg-gray-100 rounded-md"
-                      >
+                      <li key={index} className="p-2 bg-gray-100 rounded-md">
                         {notification.message}
                       </li>
                     ))
@@ -190,7 +193,10 @@ const Content: React.FC<ContentProps> = ({ token }) => {
               className="w-full p-3 border border-gray-300 rounded-md h-32"
               required
             />
-            <button type="submit" className="w-full p-3 bg-blue-500 text-white rounded-md hover:bg-blue-600">
+            <button
+              type="submit"
+              className="w-full p-3 bg-blue-500 text-white rounded-md hover:bg-blue-600"
+            >
               Submit
             </button>
           </form>
@@ -200,8 +206,10 @@ const Content: React.FC<ContentProps> = ({ token }) => {
           {posts.length > 0 ? (
             posts.map((post) => (
               <div key={post.id} className="p-6 bg-white rounded-lg shadow-md">
-                <p className="text-gray-800">{post.content}</p>
-                <p className="text-gray-400 text-sm">{new Date(post.created_at).toLocaleString()}</p>
+                <p className="text-gray-800">{post.content_text}</p>
+                <p className="text-gray-400 text-sm">
+                  {new Date(post.created_at).toLocaleString()}
+                </p>
               </div>
             ))
           ) : (
