@@ -107,7 +107,7 @@ const Content: React.FC<ContentProps> = ({ token }) => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-100 p-8">
+    <div className="min-h-screen bg-gray-100 p-8 fontPoppins">
       {/* Header with Post Button and Notifications */}
       <div className="flex justify-between items-center mb-6">
         <div>
@@ -130,7 +130,7 @@ const Content: React.FC<ContentProps> = ({ token }) => {
           {/* Toggle Post Form Button */}
           <Button
             onClick={togglePostForm}
-            className="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600"
+            className="bg-blue-500 fontPoppins text-white px-4 py-2 rounded-md hover:bg-blue-600"
           >
             {showPostForm ? "View Posts" : "Post Content"}
           </Button>
