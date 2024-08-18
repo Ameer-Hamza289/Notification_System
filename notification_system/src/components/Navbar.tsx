@@ -1,5 +1,6 @@
 import { FC } from "react";
 import { useNavigate } from "react-router-dom";
+import { Button } from "./ui/button";
 
 interface NavbarProps {
   token: string | null;
@@ -15,7 +16,7 @@ const Navbar: FC<NavbarProps> = ({ token }) => {
     <nav className="bg-gray-800 shadow-md text-white">
       <div className="max-w-7xl mx-auto px-4 py-4 flex justify-between items-center">
         <div
-          className="text-xl font-bold cursor-pointer"
+          className="text-xl font-bold cursor-pointer "
           onClick={() => navigate("/")}
         >
           TikTok Shop
@@ -41,12 +42,13 @@ const Navbar: FC<NavbarProps> = ({ token }) => {
             </>
           )}
           {token && (
-            <a
-              className="text-white bg-blue-500 hover:bg-blue-600 px-4 py-2 rounded-md cursor-pointer"
+            <Button
+              className="text-white bg-blue-500 hover:bg-blue-600 px-4 py-2 rounded-lg cursor-pointer"
               onClick={handleLogout}
             >
+              {" "}
               Logout
-            </a>
+            </Button>
           )}
         </div>
       </div>
