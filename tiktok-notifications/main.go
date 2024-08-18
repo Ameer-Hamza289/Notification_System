@@ -84,7 +84,16 @@ func main() {
 	// Initialize Gin router
 	router := gin.Default()
 
-	router.Use(cors.Default())
+	// router.Use(cors.Default())
+	router.Use(cors.New(cors.Config{
+		AllowOrigins:     []string{"http://localhost:5173"}, // Add your frontend's origin
+		AllowMethods:     []string{"GET", "POST", "PUT", "DELETE", "OPTIONS"},
+		AllowHeaders:     []string{"Origin", "Content-Type", "Authorization"}, // Allow Authorization header
+		ExposeHeaders:    []string{"Content-Length"},
+		AllowCredentials: true,
+		MaxAge:           12 * time.Hour,
+	}))
+
 	// Route for WebSocket connection
 	router.GET("/ws", func(c *gin.Context) {
 		handleWebSocket(c.Writer, c.Request, rdb)

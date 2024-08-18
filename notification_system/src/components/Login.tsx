@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import { toast } from 'react-toastify';
+import { Link, useNavigate } from 'react-router-dom';
 
 interface LoginProps {
   setToken: (token: string) => void;
@@ -11,6 +12,7 @@ const Login: React.FC<LoginProps> = ({ setToken }) => {
     email: '',
     password: '',
   });
+const navigate=useNavigate();
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -25,6 +27,7 @@ const Login: React.FC<LoginProps> = ({ setToken }) => {
       localStorage.setItem('token', token);
       setToken(token);
       toast.success('Login Successful!')
+      navigate("/content")
     } catch (error) {
         console.error(error)
         toast.error('Login Failed')
@@ -57,6 +60,12 @@ const Login: React.FC<LoginProps> = ({ setToken }) => {
           Login
         </button>
       </form>
+      <p className="text-center mt-4 text-gray-600">
+          A new user?{' '}
+          <Link to="/register" className="text-blue-500 hover:underline">
+            Create/Register now
+          </Link>
+        </p>
     </div>
   </div>
   );

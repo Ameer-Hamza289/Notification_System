@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import axios from 'axios';
+import { Link, useNavigate } from 'react-router-dom';
 
 const Registration: React.FC = () => {
   const [formData, setFormData] = useState({
@@ -7,6 +8,7 @@ const Registration: React.FC = () => {
     email: '',
     password: '',
   });
+  const navigate=useNavigate();
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -17,6 +19,7 @@ const Registration: React.FC = () => {
     try {
       const response = await axios.post('http://localhost:8081/register', formData);
       alert(response.data.message);
+      navigate("/login")
     } catch (error) {
         console.error(error);
       alert('Failed to register');
@@ -56,6 +59,12 @@ const Registration: React.FC = () => {
           Register
         </button>
       </form>
+      <p className="text-center mt-4 text-gray-600">
+          Already have an account?{' '}
+          <Link to="/login" className="text-blue-500 hover:underline">
+            Login
+          </Link>
+        </p>
     </div>
   </div>
   );
