@@ -2,12 +2,15 @@ package main
 
 import (
 	"context"
+	"database/sql"
+	"fmt"
 	"log"
 	"net/http"
 	"os"
 
 	"github.com/gin-gonic/gin"
 	"github.com/go-redis/redis/v8"
+	_ "github.com/go-sql-driver/mysql"
 	"github.com/gorilla/websocket"
 	"github.com/joho/godotenv"
 )
@@ -39,7 +42,22 @@ func main() {
 	redisPassword := os.Getenv("REDIS_PASSWORD")
 
 	log.Printf("Connecting to database %s with user %s", dbName, dbUser)
+	dsn := "app_user:root@tcp(127.0.0.1:3306)/tiktokshop"
 
+	// Connect to the database
+	db, err := sql.Open("mysql", dsn)
+	if err != nil {
+		log.Fatalf("Failed to connect to MySQL: %v", err)
+	}
+	defer db.Close()
+
+	// Test the connection
+	err = db.Ping()
+	if err != nil {
+		log.Fatalf("Failed to ping the database: %v", err)
+	}
+
+	fmt.Println("Successfully connected to MySQL!")
 	// Initialize Redis
 	rdb := redis.NewClient(&redis.Options{
 		Addr:     redisAddress, // Use the Redis endpoint from redis.io
@@ -74,6 +92,11 @@ func main() {
 
 	// Initialize Gin router
 	router := gin.Default()
+
+	// Start the server on port 8081
+	if err := router.Run(":8081"); err != nil {
+		log.Fatalf("Failed to run server: %v", err)
+	}
 
 	// WebSocket endpoint to handle connections
 	router.GET("/ws", func(c *gin.Context) {
