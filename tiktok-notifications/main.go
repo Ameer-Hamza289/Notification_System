@@ -11,6 +11,7 @@ import (
 	"time"
 
 	"github.com/dgrijalva/jwt-go"
+	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 	"github.com/go-redis/redis/v8"
 	_ "github.com/go-sql-driver/mysql"
@@ -83,6 +84,7 @@ func main() {
 	// Initialize Gin router
 	router := gin.Default()
 
+	router.Use(cors.Default())
 	// Route for WebSocket connection
 	router.GET("/ws", func(c *gin.Context) {
 		handleWebSocket(c.Writer, c.Request, rdb)

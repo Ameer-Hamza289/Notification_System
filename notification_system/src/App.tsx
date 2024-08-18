@@ -1,80 +1,34 @@
-import React, { useEffect, useState } from 'react';
-import './App.css';
-
-// Define the types for your component state
-interface Notification {
-  message: string;
-}
+import React, { useState } from "react";
+import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import Registration from "./components/Registration";
+import Login from "./components/Login";
+import Content from "./components/Content";
+import Notifications from "./components/Notifications";
+import Home from "./components/Home";
+// import './index.css'
 
 const App: React.FC = () => {
-  const [notifications, setNotifications] = useState<Notification[]>([]);
-  const [isConnected, setIsConnected] = useState<boolean>(false);
-
-  useEffect(() => {
-    // Create WebSocket connection.
-    const socket = new WebSocket('ws://localhost:8080/ws');
-
-    // Connection opened
-    socket.onopen = () => {
-      console.log('WebSocket is connected.');
-      setIsConnected(true);
-    };
-
-    // Listen for messages
-    socket.onmessage = (event: MessageEvent) => {
-      console.log('New notification received:', event.data);
-
-      // Update notifications state with the new message
-      setNotifications((prevNotifications) => [
-        ...prevNotifications,
-        { message: event.data },
-      ]);
-    };
-
-    // Handle WebSocket errors
-    socket.onerror = (error: Event) => {
-      console.error('WebSocket error:', error);
-      setIsConnected(false);
-    };
-
-    // Connection closed
-    socket.onclose = () => {
-      console.log('WebSocket connection closed.');
-      setIsConnected(false);
-    };
-
-    // Clean up WebSocket connection when component unmounts
-    return () => {
-      socket.close();
-    };
-  }, []);
+  const [token, setToken] = useState<string | null>(
+    localStorage.getItem("token")
+  );
 
   return (
-    <div className="App">
-      <header className="App-header">
-        <h1>TikTok Shop Notifications</h1>
-        <div className="connection-status">
-          {isConnected ? (
-            <span className="status-connected">Connected</span>
-          ) : (
-            <span className="status-disconnected">Disconnected</span>
-          )}
-        </div>
-
-        <div className="notification-list">
-          <h2>Notifications</h2>
-          {notifications.length > 0 ? (
-            <ul>
-              {notifications.map((notification, index) => (
-                <li key={index}>{notification.message}</li>
-              ))}
-            </ul>
-          ) : (
-            <p>No notifications yet.</p>
-          )}
-        </div>
-      </header>
-    </div>
+    <Router>
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/register" element={<Registration />} />
+        <Route path="/login" element={<Login setToken={setToken} />} />
+        {token && (
+          <>
+            <Route path="/content" element={<Content token={token} />} />
+            <Route
+              path="/notifications"
+              element={<Notifications token={token} />}
+            />
+          </>
+        )}
+      </Routes>
+    </Router>
   );
 };
 
