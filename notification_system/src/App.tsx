@@ -5,6 +5,7 @@ import Login from "./components/Login";
 import Content from "./components/Content";
 import Notifications from "./components/Notifications";
 import Home from "./components/Home";
+import Navbar from "./components/Navbar";
 // import './index.css'
 
 const App: React.FC = () => {
@@ -14,6 +15,7 @@ const App: React.FC = () => {
 
   return (
     <Router>
+      {token && <Navbar token={token} />}
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/register" element={<Registration />} />
