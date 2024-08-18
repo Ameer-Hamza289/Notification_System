@@ -183,6 +183,37 @@ func main() {
 		c.JSON(http.StatusOK, gin.H{"token": tokenString})
 	})
 
+	// Fetch recent posts
+	router.GET("/recent-posts", authenticateJWT, func(c *gin.Context) {
+		rows, err := db.Query("SELECT id, content, created_at FROM posts ORDER BY created_at DESC LIMIT 20")
+		if err != nil {
+			c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to fetch posts"})
+			return
+		}
+		defer rows.Close()
+
+		var posts []struct {
+			ID        int       `json:"id"`
+			Content   string    `json:"content"`
+			CreatedAt time.Time `json:"created_at"`
+		}
+
+		for rows.Next() {
+			var post struct {
+				ID        int       `json:"id"`
+				Content   string    `json:"content"`
+				CreatedAt time.Time `json:"created_at"`
+			}
+			if err := rows.Scan(&post.ID, &post.Content, &post.CreatedAt); err != nil {
+				c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to parse posts"})
+				return
+			}
+			posts = append(posts, post)
+		}
+
+		c.JSON(http.StatusOK, posts)
+	})
+
 	// Protected route for posting content
 	router.POST("/post-content", authenticateJWT, func(c *gin.Context) {
 		var requestBody struct {
